@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<title>The Never Ending Dashboard</title>
+		<link rel="shortcut icon" href="../favicon.ico"> 
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>	
+		<script src="js/masonry.pkgd.min.js"></script>
+		<script src="js/imagesloaded.js"></script>
+		<script src="js/classie.js"></script>
+		<script src="js/AnimOnScroll.js"></script>
+		<script src="js/data.js"></script>	
+		<!--<script type="text/javascript" src="http://tableau.russellchristopher.org:8080/javascripts/api/tableau_v8.debug.js"></script>-->
+		<script type="text/javascript" src="http://public.tableausoftware.com/javascripts/api/tableau_v8.js"></script>
+		<script src="js/modernizr.custom.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<!-- Top Navigation -->
+			<div class="codrops-top clearfix">
+				<span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15677"><span>Inspired by: Codrops http://tympanus.net/codrops/</span></a></span>
+			</div>
+			<header>
+				<h1>The Tableau Public <span>Never-Ending Dashboard</span></h1>	
+
+			</header>
+			<ul class="grid effect-6" id="grid">
+			<!-- filled in later -->
+			</ul>
+		</div>
+	
+		<script>
+ var vizObjects = new Array();
+
+ 
+
+			
+		 $(function(){
+			// page setup logic 
+			pageload();
+			
+			// Turn on animated scrolling
+			new AnimOnScroll( document.getElementById( 'grid' ), {
+				minDuration : 0.4,
+				maxDuration : 0.7,
+				viewportFactor : 0.2
+				} );			
+
+		  });
+
+
+
+			
+		function pageload() {
+			
+			//inject x list items into the grid
+			var x = publicData.length;
+			for (var i = 0; i<x; i++)
+			{
+				//load images
+				$("#grid").append("<li style='height:" + (Number(publicData[i].h) + 20) + "px;width:" +  (Number(publicData[i].w) +22) + "px;' id='li" + i + "' onclick='loady(this);'><img id='img" + i + "' src='images/" + publicData[i].image + "'></li>");
+			}
+			
+
+			
+		}
+		
+		function loady(whutclicked){
+			// handle image click
+			$('#img' + whutclicked.id.toString().substring(2)).remove();
+			$('#' + whutclicked.id).append("<div id='viz" + whutclicked.id.toString().substring(2) + "' ></div>");
+			
+			var mainVizDiv = $("#viz" + whutclicked.id.toString().substring(2));
+
+			var mainWorkbookUrl = publicData[Number(whutclicked.id.toString().substring(2))].url;
+			var mainVizOptions = {
+				hideTabs: true,
+				hideToolbar: true,
+				width: (Number(mainVizDiv.parent().innerWidth())+5) + "px",
+				height: (Number(mainVizDiv.parent().innerHeight())-20) + "px"
+			 };
+			 
+			mainViz =  new tableauSoftware.Viz(mainVizDiv[0], mainWorkbookUrl, mainVizOptions);
+
+						
+		}
+	
+			
+		</script>
+	</body>
+</html>

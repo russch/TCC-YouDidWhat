@@ -1,0 +1,351 @@
+<html>
+<head>
+<title>Not Windows Metro</title>
+
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="dist/jquery.cookie.js"></script>
+	<script type="text/javascript" src="http://localhost/javascripts/api/tableau_v8.debug.js"></script>
+	<script src="dist/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
+
+	<link type="image/vnd.microsoft.icon" href="favicon.ico" rel="shortcut icon" />
+	<link rel="stylesheet" href="css/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="dist/jquery.gridster.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/default.css"> 	
+
+
+ </head>
+
+<body>
+
+
+	<div class="codrops-top clearfix">
+	<span class='left'>Something between Pinterest and dashboard designer</span>
+			<span class='right'>
+				<input type="checkbox" id="edit" onClick='toggleEdit(this);'/><label for="edit">Edit</label>
+				<button onClick='save(this);'>Save Positions</Button>
+				<button onClick='f1()';'>Load Positions</Button>
+			</span>
+	</div>
+
+		<ul class="grid effect-6" id="grid">
+		<!-- filled in later -->
+		</ul>
+
+
+
+
+ <section class="demo">
+
+        <div class="gridster">
+          <ul id="widgetlist">
+			<!--will get filled in during loadgridster()-->
+          </ul>
+        </div>
+
+ </section>
+
+ 
+ 
+ <script type="text/javascript">
+ 
+ var serverName = "localhost", mainViz, mainWorkbook, newCustomView, dataSources,  gridster; 
+ var vizObjects = new Array();
+ var gridster; 
+ 
+	 $(function(){
+		
+		// page setup logic 
+		pageload();
+		// render vizzes in dashboard
+		renderVizzes();
+		// disable grid drag & drop
+		gridster.disable()
+		
+  	  });
+
+
+
+	  function renderVizzes() {
+
+		// A bunch of Viz-to-be objects
+		
+		var catepillarViz =  {
+			"vizOne": {dashboardName: "1", sheetName: "Sheet 1"},
+			"vizTwo": {dashboardName: "2", sheetName: "Sheet 2"},
+			"vizThree": {dashboardName: "3", sheetName: "Sheet 3"},
+			"vizFour": {dashboardName: "4", sheetName: "Sheet 4"},
+			"vizFive": {dashboardName: "5", sheetName: "Sheet 5"},		
+			"vizSix": {dashboardName: "6", sheetName: "Sheet 6"},
+			"vizSeven": {dashboardName: "7", sheetName: "Sheet 7"},
+			"vizEight": {dashboardName: "8", sheetName:  "Sheet8"}
+			}
+			
+
+		
+		var viz
+		
+		for (viz in catepillarViz){
+		// Define variables for viz
+			var mainVizDiv = $("#" + viz);
+			var mainWorkbookUrl = "http://" + serverName + "/t/SkunkWorks/views/Grid/" + catepillarViz[viz].dashboardName;
+			var mainVizOptions = {
+				hideTabs: true,
+				hideToolbar: true,
+				width: mainVizDiv.parent().innerWidth() + "px",
+				height: mainVizDiv.parent().innerHeight() + "px"
+			 };
+			mainViz =  new tableauSoftware.Viz(mainVizDiv[0], mainWorkbookUrl, mainVizOptions);
+			
+			//Push this viz into an array of viz objects
+			vizObjects.push(mainViz);
+		}
+		
+		
+	}
+
+	function toggleEdit(checkbox)
+	{
+	  // respond to edit button
+	 if (checkbox.checked == true) 
+		{
+			$("ul").addClass("edit");
+			gridster.enable();
+		}
+	 else 
+		{
+			$("ul").removeClass("edit");
+			gridster.disable();
+		}
+	}
+
+	function save()
+	{
+			// jquery cookie.js plugin to create cookie with grid placement info
+			$.cookie("grid-data", JSON.stringify(gridster.serialize()),{ expires: 7, path: '/' });
+	}
+
+
+
+
+function f1()
+{
+	gridster.remove_all_widgets();
+
+	// Odd timing issue. Give DOM enough time to reload or something	
+	setTimeout(function () {
+				reloadGridster();
+		}, 1500);	
+}
+
+
+
+function reloadGridster()
+{
+
+
+		//destroy current vizzes
+		for (var i=0; i< vizObjects.length; i++) //var viz of vizObjects)
+		{
+			viz = vizObjects[i];
+			viz.dispose();
+		}
+			
+	// Load grid placement from cookie
+	var json = JSON.parse($.cookie("grid-data"));
+	
+	var widgets = ["<li id='One'><div id='vizOne'></div></li>",
+				"<li id='Filter'><div id='vizFilter'><div id='accordion'> <h3>Filter: Year</h3> <div><select name='Year' id='Year' onChange='filterVizYear(this);'><option value='All'selected='selected'>All</option><option value='2010' id='2010'>2010</option> <option value='2011' id='2011'>2011</option><option value='2012' id='2012'>2012</option></select> </div><h3>Filter: Client</h3><div><select name='Client' id='Client' onChange='filterVizClient(this);'><option value='All' id='All' selected='selected'>All</option><option value='Big Air Domestic' id='Big Air'>Big Air</option><option value='Cheap Airways' id='Cheap Airways'>Cheap Airways</option><option value='US Rail' id='US Rail'>US Rail</option></select></div><h3>Filter: CTR %</h3><div><p><label for='amount'>Sales:</label><input type='text' id='amount' style='border: 0; color: #f6931f; font-weight: bold;' /></p><div id='slider-range'></div></div></div></div></li>",
+				"<li id ='Two'><div id='vizTwo'></div></li>",
+				"<li id ='Three'><div id='vizFive'></div></li>",
+				"<li id='Four'><div id='vizFour'></div></li>",
+				"<li id='Five'><div id='vizThree'></div></li>",
+				"<li id='Seven'><div id='vizSeven'></li>",
+				"<li id='Image'><img src='images/bigsky.png' align='middle'></li>",
+				"<li id='Six'><div id='vizSix'></div></li>",	
+				"<li id='Eight'><div id='vizEight'></div></li>"];	
+				
+
+	// Re-build gridster with widget objects
+	for (var i=0; i< json.length; i++)
+		{
+		
+			gridster.add_widget(widgets[i], json[i].size_x,
+				json[i].size_y,
+				json[i].col,
+				json[i].row);
+			
+		}
+	// fix up page as necessary
+	pageUi();
+	// re-render vizzes we destroyed
+	renderVizzes();		
+}
+
+function filterVizClient(option)
+{
+		
+		// Get Combobox value
+		selectedOption = option.options[option.selectedIndex]
+		
+		// Don't want to filter all vizzes, remove a few from the array we're about to process
+		vizObjectsToProcess = new Array();
+		// Which worksheets do we filter? 
+		toBeFiltered = new Array("2", "3", "5", "6", "7", "8");
+		
+		for (var i=0; i< vizObjects.length; i++) 
+		{
+			if ( toBeFiltered.indexOf(vizObjects[i].getWorkbook().getActiveSheet().getName()) > -1) {
+				vizObjectsToProcess.push(vizObjects[i]);
+			}
+		}
+		
+		// Filter them. 
+		
+		for (var i=0; i< vizObjectsToProcess.length; i++) 
+		{
+		
+			viz = vizObjectsToProcess[i];
+			sheetname = "Sheet " + viz.getWorkbook().getActiveSheet().getName()
+			var worksheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0];
+			
+			if (selectedOption.value == "All") {
+				worksheet.applyFilterAsync("Client_Name", "", "All");
+			}
+			else
+			{
+				worksheet.applyFilterAsync("Client_Name", selectedOption.value, "REPLACE");
+			}
+		}
+		
+			
+}
+
+function filterVizYear(option)
+{
+		// Get Combobox value
+		selectedOption = option.options[option.selectedIndex];
+		
+		
+		// Don't want to filter all vizzes, remove a few from the array we're about to process
+		vizObjectsToProcess = new Array();
+		// Which worksheets do we filter? 
+		toBeFiltered = new Array("1" ,"2", "3", "4", "5", "6", "7", "8");
+		for (var i=0; i< vizObjects.length; i++) 
+		{
+			if ( toBeFiltered.indexOf(vizObjects[i].getWorkbook().getActiveSheet().getName()) > -1) {
+				vizObjectsToProcess.push(vizObjects[i]);
+			}
+		}
+		
+		// Filter them. 
+				
+		for (var i=0; i< vizObjectsToProcess.length; i++) 
+		{
+		
+			viz = vizObjectsToProcess[i];
+			sheetname = "Sheet " + viz.getWorkbook().getActiveSheet().getName()
+			var worksheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0];
+		
+			if (selectedOption.value == "All") {
+				worksheet.applyFilterAsync("YEAR(Date)", "", "All");
+			}
+			else
+			{
+				worksheet.applyFilterAsync("YEAR(Date)", selectedOption.value, "REPLACE");
+			}
+		}
+		
+	
+}
+
+function pageload() {
+
+	// Load grid UL with HTML
+	loadGridster();
+	// Turn HTML into Grid
+	createGrid();
+	// Load jqueryui elements
+	pageUi();
+}
+
+function loadGridster()
+{
+
+var widgetsWithInfo = ["<li id='One' data-row='1' data-col='1' data-sizex='2' data-sizey='1'><div id='vizOne'></div></li>",
+            "<li id='Filter' data-row='3' data-col='1' data-sizex='1' data-sizey='1'><div id='vizFilter'><div id='accordion'> <h3>Filter: Year</h3> <div><select name='Year' id='Year' onChange='filterVizYear(this);'><option value='All'selected='selected'>All</option><option value='2010' id='2010'>2010</option> <option value='2011' id='2011'>2011</option><option value='2012' id='2012'>2012</option></select> </div><h3>Filter: Client</h3><div><select name='Client' id='Client' onChange='filterVizClient(this);'><option value='All' id='All' selected='selected'>All</option><option value='Big Air Domestic' id='Big Air'>Big Air</option><option value='Cheap Airways' id='Cheap Airways'>Cheap Airways</option><option value='US Rail' id='US Rail'>US Rail</option></select></div><h3>Filter: CTR %</h3><div><p><label for='amount'>Sales:</label><input type='text' id='amount' style='border: 0; color: #f6931f; font-weight: bold;' /></p><div id='slider-range'></div></div></div></div></li>",
+            "<li id ='Two' data-row='3' data-col='2' data-sizex='2' data-sizey='1'><div id='vizTwo'></div></li>",
+            "<li id ='Three' data-row='1' data-col='2' data-sizex='2' data-sizey='2'><div id='vizFive'></div></li>",
+            "<li id='Four' data-row='1' data-col='4' data-sizex='1' data-sizey='1'><div id='vizFour'></div></li>",
+            "<li id='Five' data-row='2' data-col='4' data-sizex='2' data-sizey='1'><div id='vizThree'></div></li>",
+            "<li id='Seven' data-row='3' data-col='4' data-sizex='2' data-sizey='1'><div id='vizSeven'></li>",
+			"<li id='Image' data-row='3' data-col='7' data-sizex='1' data-sizey='2'><img src='images/bigsky.png' align='middle'></li>",
+			"<li id='Six' data-row='2' data-col='6' data-sizex='1' data-sizey='2'><div id='vizSix'></div></li>",	
+			"<li id='Eight' data-row='4' data-col='1' data-sizex='3' data-sizey='1'><div id='vizEight'></div></li>"]; 
+			
+
+
+			$("#widgetlist").append(widgetsWithInfo[0]);
+			$("#widgetlist").append(widgetsWithInfo[1]);
+			$("#widgetlist").append(widgetsWithInfo[2]);
+			$("#widgetlist").append(widgetsWithInfo[3]);
+			$("#widgetlist").append(widgetsWithInfo[4]);
+			$("#widgetlist").append(widgetsWithInfo[5]);
+			$("#widgetlist").append(widgetsWithInfo[6]);
+			$("#widgetlist").append(widgetsWithInfo[7]);	
+			$("#widgetlist").append(widgetsWithInfo[8]);
+			$("#widgetlist").append(widgetsWithInfo[9]);			
+			
+}
+
+function createGrid()
+{
+
+	 gridster = $(".gridster > ul").gridster({
+		widget_margins: [ 7, 7],
+		widget_base_dimensions: [145, 150],
+		min_cols: 8,
+		min_rows: 5, 
+		max_rows: 5
+    }).data('gridster');
+
+}
+
+function pageUi(){
+
+ 	
+	// JQueryUI Stuff
+	// buttons
+	$( "#edit" ).button();
+	$( "inout[type=submit],button").button().click(function( event ) {
+        event.preventDefault();
+      });
+    
+    // accordian for filter
+	$( "#accordion" ).accordion({heightStyle: "content", collapsible: true});
+	
+	// slider
+	$( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 20000,
+      values: [ 100, 10000 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+}
+
+
+</script>
+
+ 
+ <script src="dist/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
+
+  </html>
