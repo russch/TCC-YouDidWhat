@@ -1,0 +1,50 @@
+div#myVizContainer {
+	position: relative;
+	/*left: 50px;*/
+	padding: 0 30px;
+}
+
+#fixed {
+	top: 0;
+  position: fixed;
+  border: 2px;
+  padding: 3px;
+  margin: 0 auto;
+  width: 780px;
+  background-color: #ffffff;
+
+ }
+
+body {
+	width: 780px;
+	margin: 0 auto;
+	font-family: Georgia, Times, serif;
+}
+
+#content {
+	padding-top: 400px;
+	width: 780px;
+}
+
+a:link {
+	color: blue; 
+	text-decoration: underline; 
+}
+a:visited {
+	color: blue; 
+	text-decoration: underline; 
+}
+a:hover {
+	color: blue; 
+	text-decoration: none; 
+}
+a:active {
+	color: red; 
+} 
+
+#title p, #title h2 {
+	text-align: center;
+}
+
+/*font-family: arial, helvetica, sans-serif;*/
+/*font-family: Georgia, Times, serif;*/

@@ -1,0 +1,118 @@
+<style>div#myVizContainer
+{
+  float: right;
+  height: 795px;
+  border: 2px;
+  width: 554px;
+  padding: 3px;
+  right: 300px;
+
+}</style>
+<div id="myVizContainer"></div>
+<script src="http://public.tableausoftware.com/javascripts/api/tableau_v8.debug.js"></script>
+
+
+<p><h3>Washington Dropout Rates Decline Most in Forever</h3>
+Tableau and Seattle Times partnership succeeds in all but two counties.
+<br><em>by: Mike Klaczynski</em></p>
+
+<p>The Washington high school dropout rate fell to 3.3 percent, the lowest in the history of the world, according to the 2011 report by the Washington Bureau of Education.</p>
+
+<p><a href="javascript://;" javascript:void(0) id="king">King County</a> (which includes mega organizations Seattle Times and Tableau Software), had the lowest dropout of the entire state with 3 percent.</p>
+
+<p>"This is an amazing accomplishment," said Ellie Fields, department chair of the Bureau of Education. "Never in the history of paleontological mankind have we ever seen dropout rates this low. Washington continues to be a leader in improving education for everybody."</p>
+
+<p>Many credit the state's success to a partnership between Seattle Times and Tableau Software, which paired up with an unprecedented initiative to bring chocolate cookies to the nation's schools-for free.</p>
+
+<p>However, not all schools succeeded. Both <a href="javascript://;" id="clallam">Clallam</a> and <a href="javascript://;" id="skamania">Skamania</a> counties saw dropout rates in 2011 over 20 percent (21 and 29 percent, respectively).</p>
+
+<p>"I think they're allergic to chocolate is the problem," said Cheryl Phillips, chief Principal of Nutrition. "We need to work with Tableau and the Seattle Times to devise a new type of cookie."
+
+<p>It's been documented in many studies that children who are allergic to chocolate tend to actually drop out of school in droves. Chocolate cookie producer Cookies 4 Everyone declined to comment for this story.</p>
+
+<p>President Obama praised the initiative and encouraged all parties to press onward. "We all need to work together, we need everyone. That includes children who love chocolate cookies, and those who can't enjoy them at all." The president pointed specifically at <a href="javascript://;" id="snohomish">Snohomish County</a>, a county traditionally full of children allergic to chocolate cookies yet through the partnership managed to severely decrease the dropout rate. "The Seattle Times and Tableau partnership is a model for the rest of the nation," Obama said.
+
+<p>Click here to view <a href="javascript://;" id="dashboard">complete summary statistics</a> about Washington dropout rates.</p>
+
+<p>Click here to return to the <a href="javascript://;" id="ogdashboard">interactive application</a>.</p>
+
+<p><a href="javascript://;" id="clear">Clear all selections by clicking here.</a></p>
+
+<p><em>Oh, just in case, this is a not a real article</em></p>
+
+<script type="text/javascript">
+
+            var placeholder, url, options, viz, workbook, link;
+
+            placeholder = document.getElementById("myVizContainer");
+            url = "http://public.tableausoftware.com/views/STeducationdemo/2011DropoutRates?:embed=y&:display_count=no"
+            var options = {
+                    hideTabs: true,
+                    width: "554px",
+                    height: "795px",
+                                        }
+            viz = new tableauSoftware.Viz(placeholder, url, options);
+
+            
+function resetViz(workbook) {
+  return workbook.revertAllAsync().then(function () {
+    // Clear the selection on the active sheets.
+    return workbook.getActiveSheet().clearSelectedMarksAsync();
+  });
+}
+
+			king = document.getElementById("king");
+            var a = function() {
+				sheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0]
+                sheet.selectMarksAsync(
+                "County",'King', "REPLACE");
+			}
+			king.onclick = a;
+			
+			snohomish = document.getElementById("snohomish");
+            var b = function() {
+				sheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0]
+                sheet.selectMarksAsync(
+                "County",'Snohomish', "REPLACE");
+			}
+			snohomish.onclick = b;
+			
+			clear = document.getElementById("clear");
+            var d = function() {
+				sheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0]
+                sheet.clearSelectedMarksAsync();
+			}
+			clear.onclick = d;
+
+       	
+			
+			dashboard = document.getElementById("dashboard");
+            var c = function() {
+				sheet = viz.getWorkbook().activateSheetAsync("Summary Statistics");
+			}
+			dashboard.onclick = c;
+
+
+	    ogdashboard = document.getElementById("ogdashboard");
+            var g = function() {
+				sheet = viz.getWorkbook().activateSheetAsync("2011 Dropout Rates");
+			}
+			ogdashboard.onclick = g;
+
+            clallam = document.getElementById("clallam");
+            var e = function() {
+				sheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0]
+                sheet.selectMarksAsync(
+                "County",'Clallam', "REPLACE");
+			}
+			clallam.onclick = e;
+
+            skamania = document.getElementById("skamania");
+            var f = function() {
+				sheet = viz.getWorkbook().getActiveSheet().getWorksheets()[0]
+                sheet.selectMarksAsync(
+                "County",'Skamania', "REPLACE");
+			}
+			skamania.onclick = f;
+
+        </script>

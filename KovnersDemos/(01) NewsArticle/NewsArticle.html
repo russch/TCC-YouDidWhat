@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>News Article JavaScript Demo</title>
+		<link href="NewsArticle.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="NewsArticle.js"></script>
+		<script src="http://localhost/javascripts/api/tableau_v8.debug.js"></script>
+	</head>
+	<body>
+	<div id = 'title'>
+			<h2>Washington State Dropout Rates Decline Most in Forever</h2></p>
+			<p>Tableau and Seattle Times partnership succeeds in all but two counties.
+			<br><em>by: Daniel Hom</em></p>
+	</div>
+	<div id="myVizContainer"></div>
+	
+	<div>
+		
+		
+
+		<p>The Washington high school dropout rate fell for a <a href='#' onClick = "switchSheet('Total Dropouts')">third year in a row</a> to 3.3 percent, the lowest in the history of the world, according to the 2011 report by the Washington Bureau of Education.</p>
+		<p>"This is an amazing accomplishment," said <a href='#' onClick = "switchSheet('Russell')">Russell Christopher</a>, department chair of the Bureau of Education. "Never in the history of paleontological mankind have we ever seen dropout rates this low. Washington continues to be a leader in improving education for everybody."</p>
+		<p>Many credit the state's success to a partnership between Seattle Times and Tableau Software, which paired up with an unprecedented initiative to bring chocolate cookies to the nation's schools-for free.</p>
+		<p><a href='#' onClick = "selectCounty('King')">King County</a> (which includes mega organizations Seattle Times and Tableau Software), had the lowest dropout of the entire state with 3 percent.</p>
+		<p>However, not all schools succeeded. Both <a href="#" onClick = "selectCounty('Clallam')">Clallam</a> and <a href="#" onClick = "selectCounty('Skamania')">Skamania</a> counties saw dropout rates in 2011 over 20 percent (21 and 29 percent, respectively).</p>
+		<p>"I think they're allergic to chocolate is the problem," said Cheryl Phillips, chief Principal of Nutrition. "We need to work with Tableau and the Seattle Times to devise a new type of cookie."
+		<p>It's been documented in many studies that children who are allergic to chocolate tend to actually drop out of school in droves. Chocolate cookie producer Cookies 4 Everyone declined to comment for this story.</p>
+		<p>President Obama praised the initiative and encouraged all parties to press onward. "We all need to work together, we need everyone. That includes children who love chocolate cookies, and those who can't enjoy them at all." The president pointed specifically at <a href="#" onClick = "selectCounty('Snohomish')">Snohomish County</a>, a county traditionally full of children allergic to chocolate cookies yet through the partnership managed to severely decrease the dropout rate. "The Seattle Times and Tableau partnership is a model for the rest of the nation," Obama said.
+		<p><em>Oh, just in case, this is a not a real article</em></p>
+	</div>
+	</body>	
+</html>
